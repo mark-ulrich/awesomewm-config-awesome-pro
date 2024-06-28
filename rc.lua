@@ -67,11 +67,13 @@ local function run_once(cmd_arr)
 end
 
 -- entries must be comma-separated
-run_once({ "wmname LG3D" }) -- Fix java problem
-run_once({ "kbdd" })
+-- run_once({ "wmname LG3D" }) -- Fix java problem
+-- run_once({ "kbdd" })
 run_once({ "picom" })
 run_once({ "nm-applet -sm-disable" }) -- Network manager tray icon
 run_once({ "pasystray" })             -- Pulse Audio tray icon
+run_once({ "keepassxc" })             -- Keepass
+run_once({ "insync start" })          -- Insync
 
 -- Variable definitions
 local themes          = {
