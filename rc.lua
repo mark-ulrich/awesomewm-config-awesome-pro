@@ -82,9 +82,10 @@ local themes          = {
   "pro-light",        -- 3
   "pro-medium-dark",  -- 4
   "pro-medium-light", -- 5
+  "custom",           -- 6
 }
 
-local chosen_theme    = themes[2]
+local chosen_theme    = themes[6]
 local modkey          = "Mod4"
 local altkey          = "Mod1"
 local terminal        = "st"
@@ -96,7 +97,7 @@ local guieditor       = "subl3"
 local scrlocker       = "slock"
 local home            = os.getenv("HOME")
 
-local default_gap_inc = -5
+local default_gap_inc = 5
 local default_gaps    = default_gap_inc * 2
 
 -- Theme
@@ -284,13 +285,13 @@ local netup_widget = wibox.container.background(net_widgetul.widget)
 netup_widget.bgimage = beautiful.widget_display
 
 -- Keyboard layout switcher
-kbdwidget = wibox.widget.textbox()
+local kbdwidget = wibox.widget.textbox()
 kbdwidget.border_width = 1
 kbdwidget.border_color = beautiful.bg_normal
 kbdwidget.font = beautiful.font
 kbdwidget:set_markup("<span foreground=" .. "'" .. beautiful.fg_normal .. "'" .. "> Eng </span>")
 
-kbdstrings = {
+local kbdstrings = {
   [0] = " Eng ",
   [1] = " Rus "
 }
@@ -311,7 +312,10 @@ local fs_icon = wibox.widget.imagebox(beautiful.widget_fs)
 local home_fs = lain.widget.fs({
   notification_preset = { fg = beautiful.fg_normal, bg = beautiful.bg_normal, font = beautiful.fs_font },
   settings = function()
-    local fsp = string.format("[ /home  %3.2f %s ]", fs_now["/home"].free, fs_now["/home"].units)
+    local usage_str = string.format("%4.2f", fs_now["/home"].free)
+    usage_str = usage_str .. fs_now["/home"].units
+    usage_str = usage_str .. " | " .. fs_now["/home"].percentage .. "%"
+    local fsp = string.format("[ /home %s ]", usage_str)
     widget:set_markup(markup.font(beautiful.font, fsp))
   end
 })
@@ -321,7 +325,10 @@ home_fs_widget.bgimage = beautiful.widget_display
 local root_fs = lain.widget.fs({
   notification_preset = { fg = beautiful.fg_normal, bg = beautiful.bg_normal, font = beautiful.fs_font },
   settings = function()
-    local fsp = string.format("[ /  %3.2f %s ]", fs_now["/"].free, fs_now["/"].units)
+    local usage_str = string.format("%4.2f", fs_now["/"].free)
+    usage_str = usage_str .. fs_now["/"].units
+    usage_str = usage_str .. " | " .. fs_now["/"].percentage .. "%"
+    local fsp = string.format("[ / %s ]", usage_str)
     widget:set_markup(markup.font(beautiful.font, fsp))
   end
 })
@@ -401,14 +408,14 @@ local bat = lain.widget.bat({
   notify = "on",
   n_perc = { 5, 15 },
   settings = function()
-    bat_notification_low_preset = {
+    local bat_notification_low_preset = {
       title = "Battery low",
       text = "Plug the cable!",
       timeout = 15,
       fg = beautiful.fg_normal,
       bg = beautiful.bg_normal
     }
-    bat_notification_critical_preset = {
+    local bat_notification_critical_preset = {
       title = "Battery exhausted",
       text = "Shutdown imminent",
       timeout = 15,
@@ -445,81 +452,79 @@ local bat = lain.widget.bat({
 local bat_widget = wibox.container.background(bat.widget)
 bat_widget.bgimage = beautiful.widget_display
 
--- Mail
-local mail_icon = wibox.widget.imagebox(beautiful.widget_mail)
--- commented because it needs to be set before use
--- local mail = lain.widget.imap({
---     timeout  = 180,
---     server   = "server",
---     mail     = "login",
---     password = "password",
---     settings = function()
---         mail_notification_preset.fg = beutiful.fg_normal
---         mail  = ""
---         count = ""
-
---         if mailcount > 0 then
---             mail = "Mail "
---             count = mailcount .. " "
---         end
-
---         widget:set_markup(markup.font(beautiful.font, markup(blue, mail) .. markup("#FFFFFF", count)))
---     end
--- })
--- local mail_widget = wibox.container.background(mail.widget)
--- mail_widget.bgimage=beautiful.widget_display
-
-function connect(s)
-  s.quake = lain.util.quake({ app = awful.util.terminal })
+local function connect(scr)
+  scr.quake = lain.util.quake({ app = awful.util.terminal })
 
   -- If wallpaper is a function, call it with the screen
-  local wallpaper = beautiful.wallpaper
-  if type(wallpaper) == "function" then
-    wallpaper = wallpaper(s)
+  local wallpapers = beautiful.wallpapers
+  local wallpaper = wallpapers[1]
+  gears.wallpaper.maximized(wallpaper, scr)
+  for screen_idx = 1, screen.count() do
+    if screen_idx == scr.index then
+      local wallpaper = wallpapers[screen_idx]
+      gears.wallpaper.maximized(wallpaper, scr, true)
+    end
   end
-  gears.wallpaper.maximized(wallpaper, s, true)
 
   -- Tags
   --awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
-  layout = { awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[1], awful.layout.layouts[3], awful
-      .layout.layouts[5], awful.layout.layouts[5] }
-  awful.tag({ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }, s, layout)
+  local layout = {
+    awful.layout.layouts[1],
+    awful.layout.layouts[1],
+    awful.layout.layouts[1],
+    awful.layout.layouts[3],
+    awful.layout.layouts[5],
+    awful.layout.layouts[5]
+  }
+  awful.tag({ "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }, scr, layout)
+
+  -- Inital gaps on every tag, every screen
+  for _, tag_name in ipairs(scr.tags) do
+    lain.util.useless_gaps_resize(default_gaps, scr, tag_name)
+  end
 
   -- Create a promptbox for each screen
-  s.mypromptbox = awful.widget.prompt()
+  scr.mypromptbox = awful.widget.prompt()
   -- Create an imagebox widget which will contains an icon indicating which layout we're using.
   -- We need one layoutbox per screen.
-  s.mylayoutbox = awful.widget.layoutbox(s)
-  s.mylayoutbox:buttons(awful.util.table.join(
+  scr.mylayoutbox = awful.widget.layoutbox(scr)
+  scr.mylayoutbox:buttons(awful.util.table.join(
     awful.button({}, 1, function() awful.layout.inc(1) end),
     awful.button({}, 3, function() awful.layout.inc(-1) end),
     awful.button({}, 4, function() awful.layout.inc(1) end),
     awful.button({}, 5, function() awful.layout.inc(-1) end)))
   -- Create a taglist widget
-  s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
+  scr.mytaglist = awful.widget.taglist(scr, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
   -- Create a tasklist widget
-  s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+  scr.mytasklist = awful.widget.tasklist(scr, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
 
   -- Create the wibox
-  s.mywibox = awful.wibar({ position = "top", screen = s, height = 22, bg = beautiful.panel, fg = beautiful.fg_normal })
+  scr.mywibox = awful.wibar({
+    position = "top",
+    screen = scr,
+    height = 22,
+    bg = beautiful.panel,
+    fg = beautiful
+        .fg_normal
+  })
 
   -- Add widgets to the wibox
-  s.mywibox:setup {
+  scr.mywibox:setup {
     layout = wibox.layout.align.horizontal,
     { -- Left widgets
       layout = wibox.layout.fixed.horizontal,
       spr5px,
-      s.mytaglist,
+      scr.mytaglist,
       spr5px,
       -- firefox_button,
 
     },
-    s.mytasklist, -- Middle widget
+    scr.mytasklist, -- Middle widget
     --nil,
-    {             -- Right widgets
+    {               -- Right widgets
       layout = wibox.layout.fixed.horizontal,
-      s.mypromptbox,
+      scr.mypromptbox,
       wibox.widget.systray(),
       spr5px,
       spr,
@@ -601,7 +606,7 @@ function connect(s)
       spr5px,
       spr,
       -- Layout box
-      s.mylayoutbox,
+      scr.mylayoutbox,
     },
   }
 end
@@ -657,9 +662,9 @@ local globalkeys = awful.util.table.join(
   awful.key({ modkey, }, "s", hotkeys_popup.show_help,
     { description = "show help", group = "awesome" }),
   -- Tag browsing
-  awful.key({ modkey, }, "Left", awful.tag.viewprev,
+  awful.key({ modkey, "Ctrl" }, "h", awful.tag.viewprev,
     { description = "view previous", group = "tag" }),
-  awful.key({ modkey, }, "Right", awful.tag.viewnext,
+  awful.key({ modkey, "Ctrl" }, "l", awful.tag.viewnext,
     { description = "view next", group = "tag" }),
   awful.key({ modkey, }, "Escape", awful.tag.history.restore,
     { description = "go back", group = "tag" }),
@@ -913,7 +918,6 @@ local globalkeys = awful.util.table.join(
     end),
   awful.key({ altkey }, "o", function() awful.screen.focused().mypromptbox:run() end,
     { description = "run prompt", group = "launcher" }),
-
   awful.key({ altkey }, "l",
     function()
       awful.prompt.run {
@@ -926,7 +930,7 @@ local globalkeys = awful.util.table.join(
     { description = "lua execute prompt", group = "awesome" })
 )
 
-clientkeys = awful.util.table.join(
+local clientkeys = awful.util.table.join(
   awful.key({ altkey, "Shift" }, "m", lain.util.magnify_client,
     { description = "magnify client", group = "client" }),
   awful.key({ modkey, }, "f",
@@ -1018,7 +1022,7 @@ for i = 1, 9 do
   )
 end
 
-clientbuttons = awful.util.table.join(
+local clientbuttons = awful.util.table.join(
   awful.button({}, 1, function(c)
     client.focus = c; c:raise()
   end),
@@ -1155,4 +1159,3 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 
 xresources.set_dpi(150)
-lain.util.useless_gaps_resize(default_gaps)
