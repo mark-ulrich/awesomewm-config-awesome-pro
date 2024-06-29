@@ -74,6 +74,7 @@ run_once({ "nm-applet -sm-disable" }) -- Network manager tray icon
 run_once({ "pasystray" })             -- Pulse Audio tray icon
 run_once({ "keepassxc" })             -- Keepass
 run_once({ "insync start" })          -- Insync
+run_once({ "pamac-tray" })            -- Update notifications
 
 -- Variable definitions
 local themes          = {
