@@ -91,9 +91,8 @@ local altkey          = "Mod1"
 local terminal        = "st"
 local terminal_launch = terminal .. " -e "
 local editor          = os.getenv("EDITOR") or "nvim"
-local gui_editor      = "gvim"
 local browser         = "firefox"
-local guieditor       = "subl3"
+local guieditor       = "subl"
 local scrlocker       = "slock"
 local home            = os.getenv("HOME")
 
