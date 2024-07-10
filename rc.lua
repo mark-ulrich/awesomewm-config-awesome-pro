@@ -823,11 +823,11 @@ local globalkeys = awful.util.table.join(
   -- Programms
   awful.key({}, "XF86Launch1", function() awful.util.spawn("subl") end),
   awful.key({ modkey }, "r", function() awful.util.spawn(terminal_launch .. "ranger") end),
-  awful.key({}, "F11", function() awful.util.spawn('qpaeq') end),
+  -- awful.key({}, "F11", function() awful.util.spawn('qpaeq') end),
   -- awful.key({ modkey }, "l", function() awful.util.spawn_with_shell(scrlocker) end),
   awful.key({}, "Print", function() awful.util.spawn("scrot -e 'mv %f ~/screenshots/'") end),
-  awful.key({}, "F3",
-    function() scratch.drop(terminal_launch .. "ranger", "center", "center", 0.75, 0.7, true, mouse.screen) end),
+  -- awful.key({}, "F3",
+  -- function() scratch.drop(terminal_launch .. "ranger", "center", "center", 0.75, 0.7, true, mouse.screen) end),
   -- Standard program
   awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
     { description = "open a terminal", group = "launcher" }),
@@ -872,12 +872,12 @@ local globalkeys = awful.util.table.join(
     { description = "Rofi launcher", group = "launcher" }),
 
   -- Widgets popups
-  awful.key({ altkey, }, "c", function() lain.widget.calendar.show(7) end,
-    { description = "show calendar", group = "widgets" }),
-  awful.key({ altkey, }, "h", function() if beautiful.fs then beautiful.fs.show(7) end end,
-    { description = "show filesystem", group = "widgets" }),
-  awful.key({ altkey, }, "w", function() if beautiful.weather then beautiful.weather.show(7) end end,
-    { description = "show weather", group = "widgets" }),
+  -- awful.key({ altkey, }, "c", function() lain.widget.calendar.show(7) end,
+  --   { description = "show calendar", group = "widgets" }),
+  -- awful.key({ altkey, }, "h", function() if beautiful.fs then beautiful.fs.show(7) end end,
+  --   { description = "show filesystem", group = "widgets" }),
+  -- awful.key({ altkey, }, "w", function() if beautiful.weather then beautiful.weather.show(7) end end,
+  --   { description = "show weather", group = "widgets" }),
 
   -- Brightness
   awful.key({}, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 5") end,
