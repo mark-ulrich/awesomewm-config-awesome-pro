@@ -335,6 +335,46 @@ local root_fs = lain.widget.fs({
 local root_fs_widget = wibox.container.background(root_fs.widget)
 root_fs_widget.bgimage = beautiful.widget_display
 
+local share_fs = lain.widget.fs({
+  notification_preset = { fg = beautiful.fg_normal, bg = beautiful.bg_normal, font = beautiful.fs_font },
+  settings = function()
+    local usage_str = string.format("%4.2f", fs_now["/share"].free)
+    usage_str = usage_str .. fs_now["/share"].units
+    usage_str = usage_str .. " | " .. fs_now["/share"].percentage .. "%"
+    local fsp = string.format("[ /share %s ]", usage_str)
+    widget:set_markup(markup.font(beautiful.font, fsp))
+  end
+})
+local share_fs_widget = wibox.container.background(share_fs.widget)
+share_fs_widget.bgimage = beautiful.widget_display
+
+local extra_fs = lain.widget.fs({
+  notification_preset = { fg = beautiful.fg_normal, bg = beautiful.bg_normal, font = beautiful.fs_font },
+  settings = function()
+    local usage_str = string.format("%4.2f", fs_now["/extra"].free)
+    usage_str = usage_str .. fs_now["/extra"].units
+    usage_str = usage_str .. " | " .. fs_now["/extra"].percentage .. "%"
+    local fsp = string.format("[ /extra %s ]", usage_str)
+    widget:set_markup(markup.font(beautiful.font, fsp))
+  end
+})
+local extra_fs_widget = wibox.container.background(extra_fs.widget)
+extra_fs_widget.bgimage = beautiful.widget_display
+
+-- local share_fs = lain.widget.fs({
+--   notification_preset = { fg = beautiful.fg_normal, bg = beautiful.bg_normal, font = beautiful.fs_font },
+--   settings = function()
+--     local usage_str = string.format("%4.2f", fs_now["/share"].free)
+--     usage_str = usage_str .. fs_now["/share"].units
+--     usage_str = usage_str .. " | " .. fs_now["/share"].percentage .. "%"
+--     local fsp = string.format("[ /share %s ]", usage_str)
+--     widget:set_markup(markup.font(beautiful.font, fsp))
+--   end
+-- })
+-- local share_fs_widget = wibox.container.background(share_fs.widget)
+-- share_fs_widget.bgimage = beautiful.widget_display
+
+
 -- MPD
 -- prev_icon = wibox.widget.imagebox(beautiful.mpd_prev)
 -- next_icon = wibox.widget.imagebox(beautiful.mpd_nex)
@@ -565,6 +605,20 @@ local function connect(scr)
       mem_icon,
       widget_display_l,
       mem_widget,
+      widget_display_r,
+      spr5px,
+      -- Share FS widget
+      spr,
+      fs_icon,
+      widget_display_l,
+      share_fs_widget,
+      widget_display_r,
+      spr5px,
+      -- Extra FS widget
+      spr,
+      fs_icon,
+      widget_display_l,
+      extra_fs_widget,
       widget_display_r,
       spr5px,
       -- /home Fs widget
