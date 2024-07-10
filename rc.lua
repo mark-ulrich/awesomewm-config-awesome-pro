@@ -879,31 +879,41 @@ local globalkeys = awful.util.table.join(
   -- awful.key({ altkey, }, "w", function() if beautiful.weather then beautiful.weather.show(7) end end,
   --   { description = "show weather", group = "widgets" }),
 
-  -- Brightness
+  -- Display brightness
   awful.key({}, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 5") end,
-    { description = "+10%", group = "hotkeys" }),
+    { description = "Brightness +10%" }),
   awful.key({}, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 5") end,
-    { description = "-10%", group = "hotkeys" }),
+    { description = "Brightness -10%" }),
 
-  -- ALSA volume control
+  -- Keyboard brightness
+  awful.key({}, "XF86KbdBrightnessUp", function() awful.util.spawn("asusctl -n") end,
+    { description = "Keyboard brightness up" }),
+  awful.key({}, "XF86KbdBrightnessDown", function() awful.util.spawn("asusctl -p") end,
+    { description = "Keyboard brightness down" }),
+
+  -- Touchpad toggle
+  awful.key({}, "XF86TouchpadToggle", function() awful.spawn.with_shell(scripts_dir .. "/touchpad-toggle") end,
+    { description = "toggle touchpad" }),
+
+  -- Volume control
   awful.key({}, "XF86AudioLowerVolume",
     function()
       os.execute("pactl set-sink-volume @DEFAULT_SINK@ -5%") --, beautiful.volume.channel))
       -- beautiful.volume.update()
     end,
-    { description = "volume down", group = "hotkeys" }),
+    { description = "volume down" }),
   awful.key({}, "XF86AudioRaiseVolume",
     function()
       os.execute("pactl set-sink-volume @DEFAULT_SINK@ +5%") --, beautiful.volume.channel))
       -- beautiful.volume.update()
     end,
-    { description = "volume up", group = "hotkeys" }),
+    { description = "volume up" }),
   awful.key({}, "XF86AudioMute",
     function()
       os.execute("pactl set-sink-mute @DEFAULT_SINK@ toggle")
-      beautiful.volume.update()
+      -- beautiful.volume.update()
     end,
-    { description = "toggle mute", group = "hotkeys" }),
+    { description = "toggle mute" }),
 
   -- MPD control
   -- awful.key({ altkey, "Control" }, "Up",
