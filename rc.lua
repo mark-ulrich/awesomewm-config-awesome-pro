@@ -96,6 +96,7 @@ local browser         = "firefox"
 local guieditor       = "subl"
 local scrlocker       = "slock"
 local home            = os.getenv("HOME")
+local scripts_dir     = home .. "/.scripts"
 
 local default_gap_inc = 5
 local default_gaps    = default_gap_inc * 2
