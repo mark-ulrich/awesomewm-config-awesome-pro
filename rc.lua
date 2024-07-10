@@ -821,7 +821,7 @@ local globalkeys = awful.util.table.join(
   -- awful.key({ modkey, "Shift" }, "d", function () lain.util.delete_tag() end,
   --           {description = "delete tag", group = "tag"}),
   -- Programms
-  awful.key({}, "XF86Launch1", function() awful.util.spawn("subl") end),
+  awful.key({}, "XF86Launch1", function() awful.util.spawn("rog-control-center") end),
   awful.key({ modkey }, "r", function() awful.util.spawn(terminal_launch .. "ranger") end),
   -- awful.key({}, "F11", function() awful.util.spawn('qpaeq') end),
   -- awful.key({ modkey }, "l", function() awful.util.spawn_with_shell(scrlocker) end),
