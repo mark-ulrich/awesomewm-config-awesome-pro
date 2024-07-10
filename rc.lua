@@ -867,6 +867,10 @@ local globalkeys = awful.util.table.join(
   awful.key({ modkey, }, "z", function() awful.screen.focused().quake:toggle() end,
     { description = "dropdown application", group = "launcher" }),
 
+  -- Rofi launcher
+  awful.key({ modkey, "Control" }, "d", function() awful.spawn("rofi -fuzzy -modi combi -show") end,
+    { description = "Rofi launcher", group = "launcher" }),
+
   -- Widgets popups
   awful.key({ altkey, }, "c", function() lain.widget.calendar.show(7) end,
     { description = "show calendar", group = "widgets" }),
