@@ -872,6 +872,12 @@ local globalkeys = awful.util.table.join(
   awful.key({ modkey, "Control" }, "d", function() awful.spawn("rofi -fuzzy -modi combi -show") end,
     { description = "Rofi launcher", group = "launcher" }),
 
+  -- Rofi greenclip
+  awful.key({ altkey, }, "`",
+    function() awful.spawn('rofi -modi "clipboard:greenclip print" -show clipboard') end,
+    { description = "rofi greenclip", group = "hotkeys" }),
+
+
   -- Widgets popups
   -- awful.key({ altkey, }, "c", function() lain.widget.calendar.show(7) end,
   --   { description = "show calendar", group = "widgets" }),
