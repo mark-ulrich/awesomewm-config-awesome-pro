@@ -974,6 +974,12 @@ local globalkeys = awful.util.table.join(
   -- awful.key({ modkey }, "a", function () awful.spawn(guieditor) end,
   --           {description = "run gui editor", group = "launcher"}),
 
+  awful.key({ modkey, "Ctrl" }, "c", function()
+      awful.spawn("gnome-calculator",
+        { floating = true, placement = awful.placement.centered })
+    end,
+    { description = "run calculator", group = "launcher" }),
+
   -- Default
   -- Menubar
   awful.key({ modkey }, "p", function() menubar.show() end,
