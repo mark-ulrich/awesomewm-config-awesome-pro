@@ -971,6 +971,8 @@ local globalkeys = awful.util.table.join(
   -- User programs
   awful.key({ modkey, "Ctrl" }, "b", function() awful.spawn(browser) end,
     { description = "run browser", group = "launcher" }),
+  awful.key({ modkey, "Ctrl" }, "p", function() awful.spawn("firefox --private-window") end,
+    { description = "run private browser", group = "launcher" }),
   -- awful.key({ modkey }, "a", function () awful.spawn(guieditor) end,
   --           {description = "run gui editor", group = "launcher"}),
 
