@@ -975,6 +975,8 @@ local globalkeys = awful.util.table.join(
     { description = "run private browser", group = "launcher" }),
   -- awful.key({ modkey }, "a", function () awful.spawn(guieditor) end,
   --           {description = "run gui editor", group = "launcher"}),
+  awful.key({ modkey, "Ctrl" }, "t", function() awful.spawn("TVLite") end,
+    { description = "run IPTV", group = "launcher" }),
 
   awful.key({ modkey, "Ctrl" }, "c", function()
       awful.spawn("gnome-calculator",
