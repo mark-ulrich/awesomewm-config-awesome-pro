@@ -979,6 +979,8 @@ local globalkeys = awful.util.table.join(
     { description = "run IPTV", group = "launcher" }),
   awful.key({ modkey, "Ctrl" }, "v", function() awful.spawn("/opt/piavpn/bin/pia-client") end,
     { description = "run PIA VPN", group = "launcher" }),
+  awful.key({ modkey, "Ctrl" }, "o", function() awful.spawn("obsidian") end,
+    { description = "run Obsidian", group = "launcher" }),
 
   awful.key({ modkey, "Ctrl" }, "c", function()
       awful.spawn("gnome-calculator",
