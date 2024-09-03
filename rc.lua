@@ -981,6 +981,8 @@ local globalkeys = awful.util.table.join(
     { description = "run PIA VPN", group = "launcher" }),
   awful.key({ modkey, "Ctrl" }, "o", function() awful.spawn("obsidian") end,
     { description = "run Obsidian", group = "launcher" }),
+  awful.key({ modkey, "Ctrl" }, "s", function() awful.spawn("subl") end,
+    { description = "run Sublime Text", group = "launcher" }),
 
   awful.key({ modkey, "Ctrl" }, "c", function()
       awful.spawn("qalculate-qt",
