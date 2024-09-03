@@ -983,10 +983,10 @@ local globalkeys = awful.util.table.join(
     { description = "run Obsidian", group = "launcher" }),
 
   awful.key({ modkey, "Ctrl" }, "c", function()
-      awful.spawn("gnome-calculator",
+      awful.spawn("qalculate-qt",
         { floating = true, placement = awful.placement.centered })
     end,
-    { description = "run calculator", group = "launcher" }),
+    { description = "run qalculate", group = "launcher" }),
 
   -- Default
   -- Menubar
